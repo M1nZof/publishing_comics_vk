@@ -104,7 +104,7 @@ def image_download(url, filename, path, payload=None):
    
 if __name__ == '__main__':
     load_dotenv()
-    vk_client_id = os.environ['VK_APPLICATION_ID']
+    vk_application_id = os.environ['VK_APPLICATION_ID']
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
     vk_group_id = 218998463
     vk_request_base_url = 'https://api.vk.com/method/'
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     server, vk_formatted_photo, photo_hash = upload_photo_and_get_vk_formatted_photo(vk_request_base_url,
                                                                                      vk_group_id, vk_access_token)
     save_photo_media_id, save_photo_owner_id = save_photo_and_get_media_and_owner_ids(vk_request_base_url,
-                                                                                      vk_client_id, vk_group_id,
+                                                                                      vk_application_id, vk_group_id,
                                                                                       vk_formatted_photo, server,
                                                                                       photo_hash, vk_access_token)
     post_photo(vk_request_base_url, save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)

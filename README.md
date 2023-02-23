@@ -66,7 +66,8 @@ python publish_comics.py
 
 Возвращает `server`, `formatted_photo`, `photo_hash`
 
-[Метод VK API](https://dev.vk.com/method/photos.getWallUploadServer)
+[Метод VK API](https://dev.vk.com/method/photos.getWallUploadServer)  
+
 [Как получить ключ доступа VK](https://dev.vk.com/api/access-token/implicit-flow-user)
 
 ### `save_photo_and_get_media_and_owner_ids`
@@ -84,7 +85,8 @@ python publish_comics.py
 
 Возвращает `media_id`, `owner_id`
 
-[Метод VK API](https://dev.vk.com/method/photos.saveWallPhoto)
+[Метод VK API](https://dev.vk.com/method/photos.saveWallPhoto)  
+
 [Как получить ключ доступа VK](https://dev.vk.com/api/access-token/implicit-flow-user)
 
 ### `post_photo`
@@ -98,5 +100,6 @@ python publish_comics.py
 - `description` - сообщение (описание комикса);
 - `access_token` - Ключ доступа VK;
 
-[Метод VK API](https://dev.vk.com/method/wall.post)
+[Метод VK API](https://dev.vk.com/method/wall.post)  
+
 [Как получить ключ доступа VK](https://dev.vk.com/api/access-token/implicit-flow-user)

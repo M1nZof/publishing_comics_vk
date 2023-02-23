@@ -41,12 +41,12 @@ def upload_photo_and_get_vk_formatted_photo(request_base_url, group_id, access_t
     return server, formatted_photo, photo_hash
 
 
-def save_photo_and_get_media_and_owner_ids(request_base_url, client_id, group_id, formatted_photo,
+def save_photo_and_get_media_and_owner_ids(request_base_url, application_id, group_id, formatted_photo,
                                            server, hash, access_token):
     save_photo_url = request_base_url + 'photos.saveWallPhoto'
 
     payload = {
-        'user_id': client_id,
+        'user_id': application_id,
         'group_id': group_id,
         'photo': formatted_photo,
         'server': server,

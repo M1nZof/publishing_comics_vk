@@ -104,7 +104,7 @@ def image_download(url, filename, path, payload=None):
    
 if __name__ == '__main__':
     load_dotenv()
-    vk_client_id = os.environ['VK_CLIENT_ID']
+    vk_client_id = os.environ['VK_APPLICATION_ID']
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
     vk_group_id = 218998463
     vk_request_base_url = 'https://api.vk.com/method/'

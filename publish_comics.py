@@ -5,19 +5,19 @@ from dotenv import load_dotenv
 
 
 def download_random_comics():
-    comics_url = 'https://c.xkcd.com/random/comic/'
-    random_comics_response = requests.get(comics_url)
+    random_comics_url = 'https://c.xkcd.com/random/comic/'
+    random_comics_response = requests.get(random_comics_url)
     random_comics_response.raise_for_status()
 
-    comics_url_with_json = os.path.join(random_comics_response.url, 'info.0.json')
-    comics = requests.get(comics_url_with_json)
-    comics.raise_for_status()
+    random_comics_url_with_json = os.path.join(random_comics_response.url, 'info.0.json')
+    random_comics = requests.get(random_comics_url_with_json)
+    random_comics.raise_for_status()
 
-    comics_image_link = comics.json().get('img')
+    comics_image_link = random_comics.json().get('img')
 
     image_download(comics_image_link, 'comics', 'comics')
 
-    return comics.json().get('alt')
+    return random_comics.json().get('alt')
 
 
 def upload_photo(request_base_url, group_id, access_token):

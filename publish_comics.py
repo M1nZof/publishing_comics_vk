@@ -15,7 +15,7 @@ def download_random_comics():
 
     comics_image_link = random_comics.json().get('img')
 
-    image_download(comics_image_link, 'comics', 'comics')
+    download_image(comics_image_link, 'comics', 'comics')
 
     return random_comics.json().get('alt')
 
@@ -89,7 +89,7 @@ def get_picture_format(picture):
     return file_format
 
 
-def image_download(url, filename, path, payload=None):
+def download_image(url, filename, path, payload=None):
     response = requests.get(url, params=payload)
     response.raise_for_status()
     file_format = get_picture_format(url)

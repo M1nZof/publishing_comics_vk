@@ -39,6 +39,7 @@ def upload_photo(request_base_url, group_id, access_token):
         files = {'photo': file}
         upload_response = requests.post(upload_url, files=files)
         upload_response.raise_for_status()
+    delete_directory_and_content('comics')
     server, formatted_photo, photo_hash = upload_response.json().values()
     return server, formatted_photo, photo_hash
 
@@ -80,9 +81,6 @@ def post_photo(request_base_url, owner_id, media_id, description, access_token):
 
     post_photo_response = requests.post(post_photo_url, data=payload)
     post_photo_response.raise_for_status()
-
-    if post_photo_response.ok:
-        delete_directory_and_content('comics')
 
 
 def get_picture_format(picture):

@@ -22,7 +22,8 @@ def download_random_comics():
     return random_comics.json().get('alt')
 
 
-def upload_photo(request_base_url, group_id, access_token):
+def upload_photo(group_id, access_token):
+    request_base_url = 'https://api.vk.com/method/'
     payload = {
         'group_id': group_id,
         'access_token': access_token,
@@ -44,8 +45,9 @@ def upload_photo(request_base_url, group_id, access_token):
     return server, formatted_photo, photo_hash
 
 
-def save_photo(request_base_url, application_id, group_id, formatted_photo,
+def save_photo(application_id, group_id, formatted_photo,
                server, hash, access_token):
+    request_base_url = 'https://api.vk.com/method/'
     save_photo_url = request_base_url + 'photos.saveWallPhoto'
 
     payload = {
@@ -66,7 +68,8 @@ def save_photo(request_base_url, application_id, group_id, formatted_photo,
     return media_id, owner_id
 
 
-def post_photo(request_base_url, owner_id, media_id, description, access_token):
+def post_photo(owner_id, media_id, description, access_token):
+    request_base_url = 'https://api.vk.com/method/'
     post_photo_url = request_base_url + 'wall.post'
 
     payload = {
@@ -112,13 +115,10 @@ if __name__ == '__main__':
     vk_application_id = os.environ['VK_APPLICATION_ID']
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
     vk_group_id = 218998463
-    vk_request_base_url = 'https://api.vk.com/method/'
 
     comics_description = download_random_comics()
-    server, vk_formatted_photo, photo_hash = upload_photo(vk_request_base_url,
-                                                          vk_group_id, vk_access_token)
-    save_photo_media_id, save_photo_owner_id = save_photo(vk_request_base_url,
-                                                          vk_application_id, vk_group_id,
+    server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
+    save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)
-    post_photo(vk_request_base_url, save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)
+    post_photo(save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)

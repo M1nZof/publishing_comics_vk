@@ -15,7 +15,7 @@ def download_random_comics():
 
     comics_image_link = random_comics.json().get('img')
 
-    download_image(comics_image_link, 'comics', 'comics')
+    download_image(comics_image_link, 'comics')
 
     return random_comics.json().get('alt')
 
@@ -89,15 +89,18 @@ def get_picture_format(picture):
     return file_format
 
 
-def download_image(url, filename, path, payload=None):
+def create_directory(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
+def download_image(url, filename, path='comics', payload=None):
     response = requests.get(url, params=payload)
     response.raise_for_status()
     file_format = get_picture_format(url)
 
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-    image_path = os.path.join(path, (f'{filename}{file_format}'))
+    create_directory(path)
+    image_path = os.path.join(path, f'{filename}{file_format}')
     with open(image_path, 'wb') as file:
         file.write(response.content)     
    

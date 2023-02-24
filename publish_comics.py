@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 
-def download_random_comics_and_get_description():
+def download_random_comic():
     comics_url = 'https://c.xkcd.com/random/comic/'
     random_comics_response = requests.get(comics_url)
     random_comics_response.raise_for_status()
@@ -20,7 +20,7 @@ def download_random_comics_and_get_description():
     return comics.json().get('alt')
 
 
-def upload_photo_and_get_vk_formatted_photo(request_base_url, group_id, access_token):
+def upload_photo(request_base_url, group_id, access_token):
     payload = {
         'group_id': group_id,
         'access_token': access_token,
@@ -41,8 +41,8 @@ def upload_photo_and_get_vk_formatted_photo(request_base_url, group_id, access_t
     return server, formatted_photo, photo_hash
 
 
-def save_photo_and_get_media_and_owner_ids(request_base_url, application_id, group_id, formatted_photo,
-                                           server, hash, access_token):
+def save_photo(request_base_url, application_id, group_id, formatted_photo,
+               server, hash, access_token):
     save_photo_url = request_base_url + 'photos.saveWallPhoto'
 
     payload = {
@@ -109,11 +109,11 @@ if __name__ == '__main__':
     vk_group_id = 218998463
     vk_request_base_url = 'https://api.vk.com/method/'
 
-    comics_description = download_random_comics_and_get_description()
-    server, vk_formatted_photo, photo_hash = upload_photo_and_get_vk_formatted_photo(vk_request_base_url,
-                                                                                     vk_group_id, vk_access_token)
-    save_photo_media_id, save_photo_owner_id = save_photo_and_get_media_and_owner_ids(vk_request_base_url,
-                                                                                      vk_application_id, vk_group_id,
-                                                                                      vk_formatted_photo, server,
-                                                                                      photo_hash, vk_access_token)
+    comics_description = download_random_comic()
+    server, vk_formatted_photo, photo_hash = upload_photo(vk_request_base_url,
+                                                          vk_group_id, vk_access_token)
+    save_photo_media_id, save_photo_owner_id = save_photo(vk_request_base_url,
+                                                          vk_application_id, vk_group_id,
+                                                          vk_formatted_photo, server,
+                                                          photo_hash, vk_access_token)
     post_photo(vk_request_base_url, save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)

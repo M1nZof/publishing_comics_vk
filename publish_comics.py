@@ -68,15 +68,15 @@ def save_photo(application_id, group_id, formatted_photo,
     return media_id, owner_id
 
 
-def post_photo(owner_id, media_id, description, access_token):
+def post_photo(wall_owner_id, photo_owner_id, media_id, description, access_token):
     request_base_url = 'https://api.vk.com/method'
     post_photo_url = f'{request_base_url}/wall.post'
 
     payload = {
-        'owner_id': 622627888,
+        'owner_id': wall_owner_id,
         'friends_only': 1,
         'from_group': 0,
-        'attachments': 'photo' + str(owner_id) + '_' + str(media_id),
+        'attachments': 'photo' + str(photo_owner_id) + '_' + str(media_id),
         'message': description,
         'access_token': access_token,
         'v': '5.131'
@@ -114,11 +114,12 @@ if __name__ == '__main__':
     load_dotenv()
     vk_application_id = os.environ['VK_APPLICATION_ID']
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
-    vk_group_id = 218998463
+    vk_group_id = os.environ['VK_GROUP_ID']
+    owner_id = os.environ['VK_OWNER_ID']
 
     comics_description = download_random_comics()
     server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
     save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)
-    post_photo(save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)
+    post_photo(owner_id, save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)

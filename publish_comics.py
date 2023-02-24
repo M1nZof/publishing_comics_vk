@@ -39,7 +39,7 @@ def upload_photo(group_id, access_token):
     with open(os.path.join('comics', 'comics.png'), 'rb') as file:
         files = {'photo': file}
         upload_response = requests.post(upload_url, files=files)
-        upload_response.raise_for_status()
+    upload_response.raise_for_status()
     delete_directory_and_content('comics')
     server, formatted_photo, photo_hash = upload_response.json().values()
     return server, formatted_photo, photo_hash

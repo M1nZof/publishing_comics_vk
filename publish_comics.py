@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 
-def download_random_comic():
+def download_random_comics():
     comics_url = 'https://c.xkcd.com/random/comic/'
     random_comics_response = requests.get(comics_url)
     random_comics_response.raise_for_status()
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     vk_group_id = 218998463
     vk_request_base_url = 'https://api.vk.com/method/'
 
-    comics_description = download_random_comic()
+    comics_description = download_random_comics()
     server, vk_formatted_photo, photo_hash = upload_photo(vk_request_base_url,
                                                           vk_group_id, vk_access_token)
     save_photo_media_id, save_photo_owner_id = save_photo(vk_request_base_url,

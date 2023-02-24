@@ -1,3 +1,5 @@
+import shutil
+
 import requests
 import os
 
@@ -80,8 +82,7 @@ def post_photo(request_base_url, owner_id, media_id, description, access_token):
     post_photo_response.raise_for_status()
 
     if post_photo_response.ok:
-        os.remove(os.path.join('comics', 'comics.png'))
-        os.rmdir('comics')
+        delete_directory_and_content('comics')
 
 
 def get_picture_format(picture):
@@ -92,6 +93,10 @@ def get_picture_format(picture):
 def create_directory(path):
     if not os.path.exists(path):
         os.mkdir(path)
+
+
+def delete_directory_and_content(path):
+    shutil.rmtree(path)
 
 
 def download_image(url, filename, path='comics', payload=None):

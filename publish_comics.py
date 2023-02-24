@@ -15,7 +15,7 @@ def download_random_comics():
     random_comics = requests.get(random_comics_url_with_json)
     random_comics.raise_for_status()
 
-    comics_image_link = random_comics.json().get('img')
+    comics_image_link = random_comics.json()['img']
 
     download_image(comics_image_link, 'comics')
 
@@ -34,7 +34,7 @@ def upload_photo(group_id, access_token):
 
     photo_link_response = requests.get(get_photo_link, params=payload)
     photo_link_response.raise_for_status()
-    upload_url = photo_link_response.json().get('response').get('upload_url')
+    upload_url = photo_link_response.json()['response']['upload_url']
 
     with open(os.path.join('comics', 'comics.png'), 'rb') as file:
         files = {'photo': file}
@@ -61,9 +61,9 @@ def save_photo(application_id, group_id, formatted_photo,
     }
     save_photo_response = requests.post(save_photo_url, data=payload)
     save_photo_response.raise_for_status()
-    save_photo_response_formatted = save_photo_response.json().get('response')[0]
-    media_id = save_photo_response_formatted.get('id')
-    owner_id = save_photo_response_formatted.get('owner_id')
+    save_photo_response_formatted = save_photo_response.json()['response'][0]
+    media_id = save_photo_response_formatted['id']
+    owner_id = save_photo_response_formatted['owner_id']
     
     return media_id, owner_id
 

@@ -23,14 +23,14 @@ def download_random_comics():
 
 
 def upload_photo(group_id, access_token):
-    request_base_url = 'https://api.vk.com/method/'
+    request_base_url = 'https://api.vk.com/method'
     payload = {
         'group_id': group_id,
         'access_token': access_token,
         'v': '5.131'
     }
 
-    get_photo_link = request_base_url + 'photos.getWallUploadServer'
+    get_photo_link = f'{request_base_url}/photos.getWallUploadServer'
 
     photo_link_response = requests.get(get_photo_link, params=payload)
     photo_link_response.raise_for_status()
@@ -47,8 +47,8 @@ def upload_photo(group_id, access_token):
 
 def save_photo(application_id, group_id, formatted_photo,
                server, hash, access_token):
-    request_base_url = 'https://api.vk.com/method/'
-    save_photo_url = request_base_url + 'photos.saveWallPhoto'
+    request_base_url = 'https://api.vk.com/method'
+    save_photo_url = f'{request_base_url}/photos.saveWallPhoto'
 
     payload = {
         'user_id': application_id,
@@ -69,8 +69,8 @@ def save_photo(application_id, group_id, formatted_photo,
 
 
 def post_photo(owner_id, media_id, description, access_token):
-    request_base_url = 'https://api.vk.com/method/'
-    post_photo_url = request_base_url + 'wall.post'
+    request_base_url = 'https://api.vk.com/method'
+    post_photo_url = f'{request_base_url}/wall.post'
 
     payload = {
         'owner_id': 622627888,

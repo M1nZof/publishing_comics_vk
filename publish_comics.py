@@ -34,6 +34,7 @@ def upload_photo(group_id, access_token):
 
     photo_link_response = requests.get(get_photo_link, params=payload)
     photo_link_response.raise_for_status()
+    check_error_of_vk_api_response(photo_link_response)
     upload_url = photo_link_response.json()['response']['upload_url']
 
     with open(os.path.join('comics', 'comics.png'), 'rb') as file:
@@ -61,6 +62,8 @@ def save_photo(application_id, group_id, formatted_photo,
     }
     save_photo_response = requests.post(save_photo_url, data=payload)
     save_photo_response.raise_for_status()
+    check_error_of_vk_api_response(save_photo_response)
+
     save_photo_response_formatted = save_photo_response.json()['response'][0]
     media_id = save_photo_response_formatted['id']
     owner_id = save_photo_response_formatted['owner_id']
@@ -84,6 +87,15 @@ def post_photo(wall_owner_id, photo_owner_id, media_id, description, access_toke
 
     post_photo_response = requests.post(post_photo_url, data=payload)
     post_photo_response.raise_for_status()
+    check_error_of_vk_api_response(post_photo_response)
+
+
+def check_error_of_vk_api_response(response):
+    formatted_response = response.json()
+    if formatted_response.get('error'):
+        raise Exception(
+            f"Code {formatted_response['error']['error_code']} - {formatted_response['error']['error_msg']}"
+        )
 
 
 def get_picture_format(picture):

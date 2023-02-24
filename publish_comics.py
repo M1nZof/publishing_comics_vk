@@ -91,8 +91,7 @@ def get_picture_format(picture):
 
 
 def create_directory(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
+    os.makedirs(path)
 
 
 def delete_directory_and_content(path):

@@ -79,7 +79,7 @@ def post_photo(wall_owner_id, photo_owner_id, media_id, description, access_toke
         'owner_id': wall_owner_id,
         'friends_only': 1,
         'from_group': 0,
-        'attachments': 'photo' + str(photo_owner_id) + '_' + str(media_id),
+        'attachments': f'photo{str(photo_owner_id)}_{str(media_id)}',
         'message': description,
         'access_token': access_token,
         'v': '5.131'

@@ -41,7 +41,6 @@ def upload_photo(group_id, access_token):
         files = {'photo': file}
         upload_response = requests.post(upload_url, files=files)
     upload_response.raise_for_status()
-    delete_directory_and_content('comics')
     server, formatted_photo, photo_hash = upload_response.json().values()
     return server, formatted_photo, photo_hash
 
@@ -98,25 +97,11 @@ def check_error_of_vk_api_response(response):
         )
 
 
-def get_picture_format(picture):
-    _, file_format = os.path.splitext(picture)
-    return file_format
-
-
-def create_directory(path):
-    os.makedirs(path, exist_ok=True)
-
-
-def delete_directory_and_content(path):
-    shutil.rmtree(path)
-
-
 def download_image(url, filename, path='comics', payload=None):
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    file_format = get_picture_format(url)
+    _, file_format = os.path.splitext(url)
 
-    create_directory(path)
     image_path = os.path.join(path, f'{filename}{file_format}')
     with open(image_path, 'wb') as file:
         file.write(response.content)     
@@ -128,9 +113,12 @@ if __name__ == '__main__':
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
     vk_group_id = os.environ['VK_GROUP_ID']
     owner_id = os.environ['VK_OWNER_ID']
+    comics_directory = 'comics'
 
+    os.makedirs(comics_directory, exist_ok=True)
     comic_description = download_random_comic()
     server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
+    shutil.rmtree(comics_directory)
     save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)

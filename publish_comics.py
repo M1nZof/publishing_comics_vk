@@ -106,7 +106,15 @@ def download_image(url, filename, path='comics', payload=None):
     image_path = os.path.join(path, f'{filename}{file_format}')
     with open(image_path, 'wb') as file:
         file.write(response.content)     
-   
+
+
+def delete_comics_directory(directory_name):
+    current_directory_path = os.getcwd()
+    comics_directory_path = os.path.join(current_directory_path, directory_name)
+    comic_path = os.path.join(comics_directory_path, 'comic.png')
+    os.remove(comic_path)
+    os.rmdir(comics_directory_path)
+
    
 if __name__ == '__main__':
     load_dotenv()
@@ -119,7 +127,7 @@ if __name__ == '__main__':
     os.makedirs(comics_directory, exist_ok=True)
     comic_description = download_random_comic()
     server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
-    shutil.rmtree(comics_directory)
+    delete_comics_directory(comics_directory)
     save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)

@@ -5,15 +5,12 @@
 ## Настройка окружения
 
 ```
-VK_APPLICATION_ID=12311253
 VK_ACCESS_TOKEN=ISDFgbi2435ASKFBfjkbnxcg
 VK_GROUP_ID=34634564537
 ```
 
-- `VK_APPLICATION_ID` - ID приложения VK;
 - `VK_ACCESS_TOKEN` - Токен VK;
 - `VK_GROUP_ID` - ID группы VK;
-- `VK_OWNER_ID` - ID пользователя или сообщества куда будут публиковаться посты
 (у пользователя положительное число, у сообщества отрицательное)
 
 Узнать ID приложения можно из адреса: https://vk.com/editapp?id=123123123&section=info

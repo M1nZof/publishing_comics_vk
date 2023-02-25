@@ -36,6 +36,7 @@ def upload_photo(group_id, access_token):
     photo_link_response.raise_for_status()
     check_error_of_vk_api_response(photo_link_response)
     upload_url = photo_link_response.json()['response']['upload_url']
+    user_id = photo_link_response.json()['response']['user_id']
 
     with open(os.path.join('comics', 'comic.png'), 'rb') as file:
         files = {'photo': file}
@@ -43,16 +44,17 @@ def upload_photo(group_id, access_token):
     upload_response.raise_for_status()
     check_error_of_vk_api_response(upload_response)
     server, formatted_photo, photo_hash = upload_response.json().values()
-    return server, formatted_photo, photo_hash
+
+    return user_id, server, formatted_photo, photo_hash
 
 
-def save_photo(application_id, group_id, formatted_photo,
+def save_photo(user_id, group_id, formatted_photo,
                server, hash, access_token):
     request_base_url = 'https://api.vk.com/method'
     save_photo_url = f'{request_base_url}/photos.saveWallPhoto'
 
     payload = {
-        'user_id': application_id,
+        'user_id': user_id,
         'group_id': group_id,
         'photo': formatted_photo,
         'server': server,
@@ -71,12 +73,12 @@ def save_photo(application_id, group_id, formatted_photo,
     return media_id, owner_id
 
 
-def post_photo(wall_owner_id, photo_owner_id, media_id, description, access_token):
+def post_photo(owner_id, photo_owner_id, media_id, description, access_token):
     request_base_url = 'https://api.vk.com/method'
     post_photo_url = f'{request_base_url}/wall.post'
 
     payload = {
-        'owner_id': wall_owner_id,
+        'owner_id': f'-{owner_id}',
         'friends_only': 1,
         'from_group': 0,
         'attachments': f'photo{str(photo_owner_id)}_{str(media_id)}',
@@ -118,17 +120,15 @@ def delete_comics_directory(directory_name):
    
 if __name__ == '__main__':
     load_dotenv()
-    vk_application_id = os.environ['VK_APPLICATION_ID']
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
     vk_group_id = os.environ['VK_GROUP_ID']
-    owner_id = os.environ['VK_OWNER_ID']
     comics_directory = 'comics'
 
     os.makedirs(comics_directory, exist_ok=True)
     comic_description = download_random_comic()
-    server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
+    user_id, server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
     delete_comics_directory(comics_directory)
-    save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
+    save_photo_media_id, save_photo_owner_id = save_photo(user_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)
-    post_photo(owner_id, save_photo_owner_id, save_photo_media_id, comic_description, vk_access_token)
+    post_photo(vk_group_id, save_photo_owner_id, save_photo_media_id, comic_description, vk_access_token)

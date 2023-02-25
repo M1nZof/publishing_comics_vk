@@ -6,20 +6,20 @@ import os
 from dotenv import load_dotenv
 
 
-def download_random_comics():
-    random_comics_url = 'https://c.xkcd.com/random/comic/'
-    random_comics_response = requests.get(random_comics_url)
-    random_comics_response.raise_for_status()
+def download_random_comic():
+    random_comic_url = 'https://c.xkcd.com/random/comic/'
+    random_comic_response = requests.get(random_comic_url)
+    random_comic_response.raise_for_status()
 
-    random_comics_url_with_json = os.path.join(random_comics_response.url, 'info.0.json')
-    random_comics = requests.get(random_comics_url_with_json)
-    random_comics.raise_for_status()
+    random_comic_url_with_json = os.path.join(random_comic_response.url, 'info.0.json')
+    random_comic = requests.get(random_comic_url_with_json)
+    random_comic.raise_for_status()
 
-    comics_image_link = random_comics.json()['img']
+    comic_image_link = random_comic.json()['img']
 
-    download_image(comics_image_link, 'comics')
+    download_image(comic_image_link, 'comic')
 
-    return random_comics.json().get('alt')
+    return random_comic.json().get('alt')
 
 
 def upload_photo(group_id, access_token):
@@ -37,7 +37,7 @@ def upload_photo(group_id, access_token):
     check_error_of_vk_api_response(photo_link_response)
     upload_url = photo_link_response.json()['response']['upload_url']
 
-    with open(os.path.join('comics', 'comics.png'), 'rb') as file:
+    with open(os.path.join('comics', 'comic.png'), 'rb') as file:
         files = {'photo': file}
         upload_response = requests.post(upload_url, files=files)
     upload_response.raise_for_status()
@@ -129,9 +129,9 @@ if __name__ == '__main__':
     vk_group_id = os.environ['VK_GROUP_ID']
     owner_id = os.environ['VK_OWNER_ID']
 
-    comics_description = download_random_comics()
+    comic_description = download_random_comic()
     server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
     save_photo_media_id, save_photo_owner_id = save_photo(vk_application_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)
-    post_photo(owner_id, save_photo_owner_id, save_photo_media_id, comics_description, vk_access_token)
+    post_photo(owner_id, save_photo_owner_id, save_photo_media_id, comic_description, vk_access_token)

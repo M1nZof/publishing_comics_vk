@@ -41,6 +41,7 @@ def upload_photo(group_id, access_token):
         files = {'photo': file}
         upload_response = requests.post(upload_url, files=files)
     upload_response.raise_for_status()
+    check_error_of_vk_api_response(upload_response)
     server, formatted_photo, photo_hash = upload_response.json().values()
     return server, formatted_photo, photo_hash
 

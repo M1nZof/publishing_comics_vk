@@ -35,11 +35,7 @@ python publish_comics.py
 
 Код разбит на несколько функций, выполняющие пошаговые запросы на загрузку комиксов и API VK
 
-### `get_picture_format`
-
-Функция получает переменную `picture`. Возвращает формат файла (например .png)
-
-### `image_download`
+### `download_image`
 
 Функция загрузки фото.
 Принимает обязательные аргументы:
@@ -52,39 +48,38 @@ python publish_comics.py
 
 - `payload` - параметры запроса на `url` (по умолчанию - None)
 
-### `download_random_comics_and_get_description`
+### `download_random_comic`
 
 Функция запрашивает рандомный комикс благодаря встроенной ссылке на [ресурсе](https://xkcd.com/) случайный комикс по следующей [ссылке](https://c.xkcd.com/random/comic/).
-Картинка комикса скачивается по функции `image_download`.
+Картинка комикса скачивается по функции `download_image`.
 Функция возвращает описание комикса (комментарий автора)
 
-### `upload_photo_and_get_vk_formatted_photo`
+### `upload_photo`
 
 Функция загрузки фото на сервера VK. Фото **должно** лежать в папке `comics` и называться `comics.png`
 Принимает обязательные аргументы:
 
 - `request_base_url` - базовая ссылка на VK API;
 - `group_id` - ID группы VK;
-- `access_token` - Ключ доступа VK
+- `access_token` - ключ доступа VK
 
-Возвращает `server`, `formatted_photo`, `photo_hash`
+Возвращает `user_id`, `server`, `formatted_photo`, `photo_hash`
 
 [Метод VK API](https://dev.vk.com/method/photos.getWallUploadServer)  
 
 [Как получить ключ доступа VK](https://dev.vk.com/api/access-token/implicit-flow-user)
 
-### `save_photo_and_get_media_and_owner_ids`
+### `save_photo`
 
 Функция сохраняет фото в альбом.
 Принимает обязательные аргументы:
 
-- `request_base_url` - базовая ссылка на VK API;
-- `application_id` - ID приложения VK;
+- `user_id` - ID пользователя;
 - `group_id` - ID группы VK;
 - `formatted_photo` - список форматов фото, который был получен в `upload_photo_and_get_vk_formatted_photo`;
 - `server` - сервер, на который было загружено фото, который был получен в `upload_photo_and_get_vk_formatted_photo`;
 - `hash` - hash загруженного фото, который был получен в `upload_photo_and_get_vk_formatted_photo`;
-- `access_token` - Ключ доступа VK
+- `access_token` - ключ доступа VK
 
 Возвращает `media_id`, `owner_id`
 
@@ -94,15 +89,24 @@ python publish_comics.py
 
 ### `post_photo`
 
-Функция публикации фото с подписью. После публикации удаляется папка `comics` с ее содержимым
-
 Принимает обязательные аргументы:
-- `request_base_url` - базовая ссылка на VK API;
+- `photo_owner_id` - ID владельца фото;
 - `owner_id` - ID владельца приложения, который был получен в `save_photo_and_get_media_and_owner_ids`;
 - `media_id` - ID приложения, который был получен в `save_photo_and_get_media_and_owner_ids`;
 - `description` - сообщение (описание комикса);
-- `access_token` - Ключ доступа VK;
+- `access_token` - ключ доступа VK;
 
 [Метод VK API](https://dev.vk.com/method/wall.post)  
 
 [Как получить ключ доступа VK](https://dev.vk.com/api/access-token/implicit-flow-user)
+
+### `check_error_of_vk_api_response`
+
+Метод проверки ошибок VK API
+
+Принимает обязательный аргумент:
+- `response` - ответ от VK API
+
+### `delete_comics_directory`
+
+Метод удаления директории `comics` с ее содержимым

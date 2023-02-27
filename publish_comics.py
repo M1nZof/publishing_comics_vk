@@ -126,8 +126,10 @@ if __name__ == '__main__':
 
     os.makedirs(comics_directory, exist_ok=True)
     comic_description = download_random_comic()
-    user_id, server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
-    delete_comics_directory(comics_directory)
+    try:
+        user_id, server, vk_formatted_photo, photo_hash = upload_photo(vk_group_id, vk_access_token)
+    finally:
+        delete_comics_directory(comics_directory)
     save_photo_media_id, save_photo_owner_id = save_photo(user_id, vk_group_id,
                                                           vk_formatted_photo, server,
                                                           photo_hash, vk_access_token)

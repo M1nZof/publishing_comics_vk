@@ -115,7 +115,6 @@ def delete_comics_directory(directory_name):
     comics_directory_path = os.path.join(current_directory_path, directory_name)
     comic_path = os.path.join(comics_directory_path, 'comic.png')
     os.remove(comic_path)
-    os.rmdir(comics_directory_path)
 
    
 if __name__ == '__main__':

@@ -80,7 +80,7 @@ def post_photo(owner_id, photo_owner_id, media_id, description, access_token):
     payload = {
         'owner_id': f'-{owner_id}',
         'friends_only': 1,
-        'from_group': 0,
+        'from_group': 1,
         'attachments': f'photo{str(photo_owner_id)}_{str(media_id)}',
         'message': description,
         'access_token': access_token,
